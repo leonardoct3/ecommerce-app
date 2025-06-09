@@ -1,18 +1,17 @@
 import express from 'express';
-import { query } from './db/index.js';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js'
+import morgan from 'morgan';
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
+app.use(express.json());
+app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
-    res.send("Hello World!");
-})
+app.use('/', userRoutes);
 
-app.get('/health', async (req, res) => {
-    const { rows } = await query('SELECT 1 AS ok');
-    res.json(rows[0]);
-})
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+const PORT = process.env.port || 3000;
+app.listen(PORT, () => {
+    console.log(`\nEcommerce app listening on port ${PORT}\n`);
 })
