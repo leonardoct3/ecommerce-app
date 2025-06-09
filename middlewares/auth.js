@@ -8,10 +8,11 @@ export function configurePassport(passport) {
       try {
         const { rows } = await query('SELECT * FROM public.users WHERE email = $1;', [email]);
         const user = rows[0];
-        console.log('User:', JSON.stringify(user, null, 2));
+        // console.log('User:', JSON.stringify(user, null, 2));
 
 
         if (!user) return done(null, false, { message: 'Usuário não encontrado' });
+        // console.log(`Comparing ${password} with ${user.password}`);
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) return done(null, false, { message: 'Senha incorreta' });
 
