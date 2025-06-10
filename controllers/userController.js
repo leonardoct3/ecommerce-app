@@ -18,3 +18,25 @@ export const registerUser = async (req, res) => {
         return res.sendStatus(500);
     }
 }
+
+export const getUsers = async (req, res) => {
+    try {
+        let result = await query("SELECT * FROM users;");
+        return res.status(200).json(result.rows);
+    } catch (e) {
+        return res.status(500).json({ error: e.message });
+    }
+}
+
+export const getUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            res.status(400).json({ message: "ID não enviado" });
+        }
+        let result = await query("SELECT * FROM users WHERE id = $1;", [id]);
+        res.status(200).json(result.rows[0]);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+}
