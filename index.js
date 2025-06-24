@@ -4,6 +4,7 @@ import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import productRoutes from './routes/productsRoutes.js'
 import cartRoutes from './routes/cartRoutes.js'
+import orderRoutes from './routes/orderRoutes.js';
 import morgan from 'morgan';
 import { configurePassport } from './middlewares/auth.js';
 import passport from 'passport';
@@ -27,6 +28,7 @@ app.use('/', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/cart', cartRoutes);
+app.use('/orders', orderRoutes);
 
 const PORT = process.env.port || 3000;
 app.listen(PORT, () => {
