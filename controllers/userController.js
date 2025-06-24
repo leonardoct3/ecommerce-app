@@ -40,3 +40,31 @@ export const getUser = async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 }
+
+export const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            res.status(400).json({ message: "ID não enviado" });
+        }
+        await query("DELETE FROM users WHERE id = $1;", [id]);
+
+        return res.sendStatus(200);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+}
+
+export const editUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name } = req.body;
+        if (!name) {
+            req.sendStatus(400);
+        }
+        await query("UPDATE users SET name = $1 WHERE id = $2;", [name, id]);
+        return res.sendStatus(200);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+}
