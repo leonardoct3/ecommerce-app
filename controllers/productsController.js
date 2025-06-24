@@ -41,7 +41,7 @@ export const removeProduct = async (req, res) => {
             return res.status(400).json({ message: "ID do produto não informado "});
         }
         await query("DELETE FROM products WHERE id = $1;", [id]);
-        return res.status(200).json({ message: "Produto excluído com sucesso" });
+        return res.sendStatus(204);
     } catch(e) {
         return res.status(500).json({ error: e.message });
     }
@@ -58,6 +58,6 @@ export const getProduct = async (req, res) => {
         }
         return res.status(200).json(result.rows);
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 }

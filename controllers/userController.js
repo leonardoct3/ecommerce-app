@@ -37,7 +37,7 @@ export const getUser = async (req, res) => {
         let result = await query("SELECT * FROM users WHERE id = $1;", [id]);
         res.status(200).json(result.rows[0]);
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 }
 
@@ -49,9 +49,9 @@ export const deleteUser = async (req, res) => {
         }
         await query("DELETE FROM users WHERE id = $1;", [id]);
 
-        return res.sendStatus(200);
+        return res.sendStatus(204);
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 }
 
@@ -62,9 +62,10 @@ export const editUser = async (req, res) => {
         if (!name) {
             req.sendStatus(400);
         }
-        await query("UPDATE users SET name = $1 WHERE id = $2;", [name, id]);
+        const updatedAt = new Date().toISOString();
+        await query("UPDATE users SET name = $1, updated_at = $2 WHERE id = $3;", [name, updatedAt, id]);
         return res.sendStatus(200);
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 }
